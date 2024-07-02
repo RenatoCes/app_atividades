@@ -1,15 +1,26 @@
 // screens/DetailsScreen.tsx
 import React, { useState } from 'react';
-import { View, Text, TextInput, Button, FlatList } from 'react-native';
+import { View, Text, TextInput, Button, FlatList, StyleSheet } from 'react-native';
 import DetailStyles from './style';
+import DateTimeDisplay from '../../calendario/DateTimeDisplay';
 
-const DetailsScreen: React.FC = () => {
+interface Task {
+  name: string;
+  date: string;
+}
+
+const TaskScreen: React.FC = () => {
   const [taskName, setTaskName] = useState('');
-  const [tasks, setTasks] = useState<string[]>([]);
+  const [tasks, setTasks] = useState<Task[]>([]);
 
   const handleAddTask = () => {
     if (taskName.trim() !== '') {
-      setTasks([...tasks, taskName]);
+      const currentDate = new Date();
+      const year = currentDate.getFullYear();
+      const month = currentDate.toLocaleString('default', { month: 'long' });
+      const day = currentDate.getDate();
+      const date = `${day} de ${month} de ${year}`;
+      setTasks([...tasks, { name: taskName, date }]);
       setTaskName('');
     }
   };
@@ -41,7 +52,8 @@ const DetailsScreen: React.FC = () => {
         keyExtractor={(item, index) => index.toString()}
         renderItem={({ item, index }) => (
           <View style={DetailStyles.taskItem}>
-            <Text>{item}</Text>
+            <Text>{item.name}</Text>
+            <Text>{item.date}</Text>
             <Button title="Excluir" onPress={() => handleDeleteTask(index)} />
           </View>
         )}
@@ -50,4 +62,4 @@ const DetailsScreen: React.FC = () => {
   );
 };
 
-export default DetailsScreen;
+export default TaskScreen;

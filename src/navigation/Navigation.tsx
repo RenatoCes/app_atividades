@@ -1,31 +1,22 @@
+
 import React from 'react';
-import { createStackNavigator, StackNavigationOptions } from '@react-navigation/stack';
 import { NavigationContainer } from '@react-navigation/native';
+import { createStackNavigator } from '@react-navigation/stack';
 import HomeScreen from '../screens/Home/Home';
-import DetailsScreen from '../screens/details/Details';
-
-
-export type RootStackParamList = {
-  Home: undefined;
-  Details: { userId: string };
-};
+import TaskScreen from '../screens/Tarefas/Task';
+import { RootStackParamList } from './Types';
 
 const Stack = createStackNavigator<RootStackParamList>();
 
-const AppNavigator: React.FC = () => {
-  const screenOptions: StackNavigationOptions = {
-    headerShown: false,
-  };
-
+const Navigation = () => {
   return (
     <NavigationContainer>
-      <Stack.Navigator initialRouteName="Home" screenOptions={screenOptions}>
-        
+      <Stack.Navigator initialRouteName="Home">
         <Stack.Screen name="Home" component={HomeScreen} />
-        <Stack.Screen name="Details" component={DetailsScreen}/>        
+        <Stack.Screen name="Tarefa" component={TaskScreen} />
       </Stack.Navigator>
     </NavigationContainer>
   );
 };
 
-export default AppNavigator;
+export default Navigation;

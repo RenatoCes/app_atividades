@@ -1,7 +1,7 @@
 // styles/DetailsScreenStyles.tsx
 import { StyleSheet } from 'react-native';
 
-const DetailStyles = StyleSheet.create({
+const TaskStyles = StyleSheet.create({
   container: {
     flex: 1,
     padding: 20,
@@ -29,4 +29,4 @@ const DetailStyles = StyleSheet.create({
     marginBottom: 10,
   },
 });
-export default DetailStyles
+export default TaskStyles
