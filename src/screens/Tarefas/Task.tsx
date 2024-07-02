@@ -1,8 +1,7 @@
 // screens/DetailsScreen.tsx
 import React, { useState } from 'react';
-import { View, Text, TextInput, Button, FlatList, StyleSheet } from 'react-native';
-import DetailStyles from './style';
-import DateTimeDisplay from '../../calendario/DateTimeDisplay';
+import { View, Text, TextInput, Button, FlatList, Alert } from 'react-native';
+import TaskStyles from './style';
 
 interface Task {
   name: string;
@@ -11,18 +10,38 @@ interface Task {
 
 const TaskScreen: React.FC = () => {
   const [taskName, setTaskName] = useState('');
+  const [taskDate, setTaskDate] = useState('');
   const [tasks, setTasks] = useState<Task[]>([]);
 
   const handleAddTask = () => {
-    if (taskName.trim() !== '') {
-      const currentDate = new Date();
-      const year = currentDate.getFullYear();
-      const month = currentDate.toLocaleString('default', { month: 'long' });
-      const day = currentDate.getDate();
-      const date = `${day} de ${month} de ${year}`;
-      setTasks([...tasks, { name: taskName, date }]);
-      setTaskName('');
+    if (taskName.trim() === '') {
+      Alert.alert('Erro', 'Por favor, insira o nome da tarefa.');
+      return;
     }
+
+    if (taskDate.trim() === '') {
+      Alert.alert('Erro', 'Por favor, insira a data da tarefa.');
+      return;
+    }
+
+    const currentDate = new Date();
+    const taskDateObj = parseDate(taskDate);
+
+    if (taskDateObj.getTime() < currentDate.getTime()) {
+      Alert.alert('Atenção', 'A tarefa está expirada!');
+    } else if (taskDateObj.getTime() === currentDate.getTime()) {
+      Alert.alert('Atenção', 'A tarefa deve ser feita hoje!');
+    } else {
+      const newTask: Task = { name: taskName, date: taskDate };
+      setTasks([...tasks, newTask]);
+      setTaskName('');
+      setTaskDate('');
+    }
+  };
+
+  const parseDate = (dateString: string): Date => {
+    const [day, month, year] = dateString.split('/').map(Number);
+    return new Date(year, month - 1, day); // Month in JavaScript Date is 0-indexed
   };
 
   const handleDeleteTask = (index: number) => {
@@ -32,16 +51,22 @@ const TaskScreen: React.FC = () => {
   };
 
   return (
-    <View style={DetailStyles.container}>
-      <Text style={DetailStyles.title}>Tarefas</Text>
+    <View style={TaskStyles.container}>
+      <Text style={TaskStyles.title}>Tarefas</Text>
 
       {/* Input para adicionar nova tarefa */}
-      <View style={DetailStyles.inputContainer}>
+      <View style={TaskStyles.inputContainer}>
         <TextInput
-          style={DetailStyles.input}
+          style={TaskStyles.input}
           placeholder="Digite o nome da tarefa"
           value={taskName}
           onChangeText={(text) => setTaskName(text)}
+        />
+        <TextInput
+          style={TaskStyles.input}
+          placeholder="Digite a data (ex: 01/07/2024)"
+          value={taskDate}
+          onChangeText={(text) => setTaskDate(text)}
         />
         <Button title="Adicionar" onPress={handleAddTask} />
       </View>
@@ -51,7 +76,7 @@ const TaskScreen: React.FC = () => {
         data={tasks}
         keyExtractor={(item, index) => index.toString()}
         renderItem={({ item, index }) => (
-          <View style={DetailStyles.taskItem}>
+          <View style={TaskStyles.taskItem}>
             <Text>{item.name}</Text>
             <Text>{item.date}</Text>
             <Button title="Excluir" onPress={() => handleDeleteTask(index)} />
