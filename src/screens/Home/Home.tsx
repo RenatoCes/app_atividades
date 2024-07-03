@@ -14,7 +14,7 @@ const HomeScreen: React.FC = () => {
         style={Homestyles.buttonContainer}
         onPress={() => navigation.navigate('Tarefa')}
       >
-        <Text style={Homestyles.buttonText}>adcionar Tarefa </Text>
+        <Text style={Homestyles.buttonText}>Novas Tarefas</Text>
       </TouchableOpacity>
     </View>
   );

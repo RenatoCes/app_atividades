@@ -5,12 +5,12 @@ const Homestyles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: '#000',
+    backgroundColor: '#f0f0f0',
   },
   text: {
     fontSize: 24,
     fontWeight: 'bold',
-    color: '#fff',
+    color: '#000',
     marginBottom: 20, // Ajuste para espaçamento abaixo do texto
   },
   buttonContainer: {
@@ -20,6 +20,7 @@ const Homestyles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     position: 'relative',
+    backgroundColor: "gray",
   },
   gradient: {
     flex: 1,
@@ -28,7 +29,7 @@ const Homestyles = StyleSheet.create({
     borderRadius: 10,
   },
   buttonText: {
-    color: '#fff',
+    color: '#000',
     fontSize: 18,
     fontWeight: 'bold',
   },
