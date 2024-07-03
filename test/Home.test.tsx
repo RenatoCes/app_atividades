@@ -1,3 +1,5 @@
+// npm install --save-dev jest @testing-library/react-native @testing-library/jest-native --legacy-peer-deps
+//
 import React from 'react';
 import { render, fireEvent } from '@testing-library/react-native';
 import { NavigationContainer } from '@react-navigation/native';

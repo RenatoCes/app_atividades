@@ -9,12 +9,12 @@ const HomeScreen: React.FC = () => {
 
   return (
     <View style={Homestyles.container}>
-      <Text style={Homestyles.text}>nome do app</Text>
+      <Text style={Homestyles.text}>REMINDER</Text>
       <TouchableOpacity
         style={Homestyles.buttonContainer}
         onPress={() => navigation.navigate('Tarefa')}
       >
-        <Text style={Homestyles.buttonText}>Novas Tarefas</Text>
+        <Text style={Homestyles.buttonText}>Tarefas</Text>
       </TouchableOpacity>
     </View>
   );

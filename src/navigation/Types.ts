@@ -1,5 +1,5 @@
 
 export type RootStackParamList = {
-  Home: undefined;
+  REMINDER: undefined;
   Tarefa: undefined;
 };

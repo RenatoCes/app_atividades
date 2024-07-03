@@ -123,7 +123,7 @@ const TaskScreen: React.FC = () => {
           keyboardType="numeric"
           maxLength={10}
         />
-        <Button title="Adicionar" onPress={handleAddTask} />
+        <Button title="Adicionar Tarefa" onPress={handleAddTask} />
       </View>
 
       {/* Lista de tarefas */}

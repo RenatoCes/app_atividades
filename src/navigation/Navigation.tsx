@@ -11,8 +11,8 @@ const Stack = createStackNavigator<RootStackParamList>();
 const Navigation = () => {
   return (
     <NavigationContainer>
-      <Stack.Navigator initialRouteName="Home">
-        <Stack.Screen name="Home" component={HomeScreen} />
+      <Stack.Navigator initialRouteName="REMINDER">
+        <Stack.Screen name="REMINDER" component={HomeScreen} />
         <Stack.Screen name="Tarefa" component={TaskScreen} />
       </Stack.Navigator>
     </NavigationContainer>
