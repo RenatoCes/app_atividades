@@ -9,7 +9,7 @@ const HomeScreen: React.FC = () => {
 
   return (
     <View style={Homestyles.container}>
-      <Text style={Homestyles.text}>Tela Home</Text>
+      <Text style={Homestyles.text}>nome do app</Text>
       <TouchableOpacity
         style={Homestyles.buttonContainer}
         onPress={() => navigation.navigate('Tarefa')}

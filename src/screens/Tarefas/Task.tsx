@@ -9,7 +9,7 @@ interface Task {
   date: string;
 }
 
-const DetailsScreen: React.FC = () => {
+const TaskScreen: React.FC = () => {
   const [taskName, setTaskName] = useState('');
   const [taskDate, setTaskDate] = useState('');
   const [tasks, setTasks] = useState<Task[]>([]);
@@ -142,4 +142,4 @@ const DetailsScreen: React.FC = () => {
   );
 };
 
-export default DetailsScreen;
+export default TaskScreen;

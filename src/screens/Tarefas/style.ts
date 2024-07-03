@@ -1,4 +1,4 @@
-// styles/DetailsScreenStyles.tsx
+
 import { StyleSheet } from 'react-native';
 
 const TaskStyles = StyleSheet.create({
