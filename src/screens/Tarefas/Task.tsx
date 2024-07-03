@@ -85,13 +85,13 @@ const DetailsScreen: React.FC = () => {
     // Adiciona os caracteres de formatação conforme necessário
     let formatted = '';
     if (cleaned.length >= 1) {
-      formatted += cleaned.substring(0, 1).padStart(2, '0');
+      formatted += cleaned.substring(0, 1).padStart(2);
     }
     if (cleaned.length >= 2) {
       formatted = cleaned.substring(0, 2);
     }
     if (cleaned.length > 2) {
-      formatted += '/' + cleaned.substring(2, 3).padStart(2, '0');
+      formatted += '/' + cleaned.substring(2, 3).padStart(2);
     }
     if (cleaned.length >= 4) {
       formatted = cleaned.substring(0, 2) + '/' + cleaned.substring(2, 4);
