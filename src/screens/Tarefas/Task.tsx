@@ -117,7 +117,7 @@ const DetailsScreen: React.FC = () => {
         />
         <TextInput
           style={TaskStyles.input}
-          placeholder="Digite a data (ex: 1/7/2024)"
+          placeholder="Digite a data"
           value={taskDate}
           onChangeText={handleDateChange}
           keyboardType="numeric"
