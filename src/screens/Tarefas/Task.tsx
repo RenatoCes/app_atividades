@@ -1,17 +1,42 @@
 // screens/DetailsScreen.tsx
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { View, Text, TextInput, Button, FlatList, Alert } from 'react-native';
 import TaskStyles from './style';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 interface Task {
   name: string;
   date: string;
 }
 
-const TaskScreen: React.FC = () => {
+const DetailsScreen: React.FC = () => {
   const [taskName, setTaskName] = useState('');
   const [taskDate, setTaskDate] = useState('');
   const [tasks, setTasks] = useState<Task[]>([]);
+
+  useEffect(() => {
+    loadTasks();
+  }, []);
+
+  const saveTasks = async (tasks: Task[]) => {
+    try {
+      const jsonValue = JSON.stringify(tasks);
+      await AsyncStorage.setItem('@tasks', jsonValue);
+    } catch (e) {
+      console.error('Erro ao salvar tarefas:', e);
+    }
+  };
+
+  const loadTasks = async () => {
+    try {
+      const jsonValue = await AsyncStorage.getItem('@tasks');
+      if (jsonValue != null) {
+        setTasks(JSON.parse(jsonValue));
+      }
+    } catch (e) {
+      console.error('Erro ao carregar tarefas:', e);
+    }
+  };
 
   const handleAddTask = () => {
     if (taskName.trim() === '') {
@@ -33,7 +58,9 @@ const TaskScreen: React.FC = () => {
       Alert.alert('Atenção', 'A tarefa deve ser feita hoje!');
     } else {
       const newTask: Task = { name: taskName, date: taskDate };
-      setTasks([...tasks, newTask]);
+      const updatedTasks = [...tasks, newTask];
+      setTasks(updatedTasks);
+      saveTasks(updatedTasks);
       setTaskName('');
       setTaskDate('');
     }
@@ -41,13 +68,14 @@ const TaskScreen: React.FC = () => {
 
   const parseDate = (dateString: string): Date => {
     const [day, month, year] = dateString.split('/').map(Number);
-    return new Date(year, month - 1, day); 
+    return new Date(year, month - 1, day); // Month in JavaScript Date is 0-indexed
   };
 
   const handleDeleteTask = (index: number) => {
     const newTasks = [...tasks];
     newTasks.splice(index, 1);
     setTasks(newTasks);
+    saveTasks(newTasks);
   };
 
   const handleDateChange = (text: string) => {
@@ -114,4 +142,4 @@ const TaskScreen: React.FC = () => {
   );
 };
 
-export default TaskScreen;
+export default DetailsScreen;
