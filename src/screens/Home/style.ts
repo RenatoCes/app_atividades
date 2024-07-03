@@ -1,4 +1,3 @@
-// HomeStyle.ts
 import { StyleSheet } from 'react-native';
 
 const Homestyles = StyleSheet.create({
@@ -6,18 +5,27 @@ const Homestyles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
+    backgroundColor: '#000',
   },
   text: {
     fontSize: 24,
     fontWeight: 'bold',
+    color: '#fff',
     marginBottom: 20, // Ajuste para espaçamento abaixo do texto
   },
   buttonContainer: {
-    backgroundColor: '#007bff',
-    borderRadius: 5,
-    paddingVertical: 12,
-    paddingHorizontal: 30,
-    marginTop: 20, // Adicione margem acima do botão
+    width: 220,
+    height: 50,
+    borderRadius: 10,
+    justifyContent: 'center',
+    alignItems: 'center',
+    position: 'relative',
+  },
+  gradient: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderRadius: 10,
   },
   buttonText: {
     color: '#fff',

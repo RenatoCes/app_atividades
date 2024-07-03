@@ -29,7 +29,7 @@ const TaskScreen: React.FC = () => {
 
     if (taskDateObj.getTime() < currentDate.getTime()) {
       Alert.alert('Atenção', 'A tarefa está expirada!');
-    } else if (taskDateObj.getTime() === currentDate.getTime()) {
+    } else if (taskDateObj.toDateString() === currentDate.toDateString()) {
       Alert.alert('Atenção', 'A tarefa deve ser feita hoje!');
     } else {
       const newTask: Task = { name: taskName, date: taskDate };
@@ -41,13 +41,38 @@ const TaskScreen: React.FC = () => {
 
   const parseDate = (dateString: string): Date => {
     const [day, month, year] = dateString.split('/').map(Number);
-    return new Date(year, month - 1, day); // Month in JavaScript Date is 0-indexed
+    return new Date(year, month - 1, day); 
   };
 
   const handleDeleteTask = (index: number) => {
     const newTasks = [...tasks];
     newTasks.splice(index, 1);
     setTasks(newTasks);
+  };
+
+  const handleDateChange = (text: string) => {
+    // Remove todos os caracteres que não são números
+    const cleaned = text.replace(/[^\d]/g, '');
+
+    // Adiciona os caracteres de formatação conforme necessário
+    let formatted = '';
+    if (cleaned.length >= 1) {
+      formatted += cleaned.substring(0, 1).padStart(2, '0');
+    }
+    if (cleaned.length >= 2) {
+      formatted = cleaned.substring(0, 2);
+    }
+    if (cleaned.length > 2) {
+      formatted += '/' + cleaned.substring(2, 3).padStart(2, '0');
+    }
+    if (cleaned.length >= 4) {
+      formatted = cleaned.substring(0, 2) + '/' + cleaned.substring(2, 4);
+    }
+    if (cleaned.length > 4) {
+      formatted += '/' + cleaned.substring(4, 8);
+    }
+
+    setTaskDate(formatted);
   };
 
   return (
@@ -64,9 +89,11 @@ const TaskScreen: React.FC = () => {
         />
         <TextInput
           style={TaskStyles.input}
-          placeholder="Digite a data (ex: 01/07/2024)"
+          placeholder="Digite a data (ex: 1/7/2024)"
           value={taskDate}
-          onChangeText={(text) => setTaskDate(text)}
+          onChangeText={handleDateChange}
+          keyboardType="numeric"
+          maxLength={10}
         />
         <Button title="Adicionar" onPress={handleAddTask} />
       </View>
