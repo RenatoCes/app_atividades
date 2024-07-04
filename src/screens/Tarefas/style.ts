@@ -1,11 +1,9 @@
-// style.js ou style.ts
 import { StyleSheet } from 'react-native';
 
 const TaskStyles = StyleSheet.create({
   container: {
     flex: 1,
     padding: 20,
-    backgroundColor: '#fff',
   },
   title: {
     fontSize: 24,
@@ -19,28 +17,43 @@ const TaskStyles = StyleSheet.create({
     height: 40,
     borderColor: '#ccc',
     borderWidth: 1,
+    borderRadius: 5,
     paddingHorizontal: 10,
     marginBottom: 10,
   },
   dateText: {
-    marginBottom: 10,
+    marginTop: 10,
+    fontSize: 16,
   },
   taskItem: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
+    borderColor: '#ccc',
+    borderWidth: 1,
+    borderRadius: 5,
     padding: 10,
-    borderBottomColor: '#ccc',
-    borderBottomWidth: 1,
+    marginBottom: 10,
   },
   taskItemText: {
-    fontSize: 18,
+    fontSize: 16,
   },
-  emptyListText: { // Adicione este estilo
-    textAlign: 'center',
-    marginTop: 20,
+  emptyListText: {
     fontSize: 18,
-    color: '#999',
+    fontStyle: 'italic',
+  },
+  addButton: {
+    backgroundColor: '#4CAF50',
+    paddingVertical: 8,
+    paddingHorizontal: 12,
+    borderRadius: 5,
+    alignSelf: 'flex-end',
+  },
+  deleteButton: {
+    backgroundColor: 'black',
+    paddingVertical: 8,
+    paddingHorizontal: 12,
+    borderRadius: 5,
   },
 });
 

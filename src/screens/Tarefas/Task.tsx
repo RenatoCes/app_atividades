@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useCallback } from 'react';
-import { View, Text, TextInput, Button, FlatList, Alert } from 'react-native';
+import { View, Text, TextInput, Button, FlatList, Alert, KeyboardAvoidingView, Platform, ScrollView, TouchableOpacity } from 'react-native';
 import TaskStyles from './style';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import DateTimePicker from '@react-native-community/datetimepicker';
@@ -124,47 +124,55 @@ const TaskScreen: React.FC = () => {
     }
   }, []);
 
-  const renderHeader = () => (
-    <View style={TaskStyles.inputContainer}>
-      <TextInput
-        style={TaskStyles.input}
-        placeholder="Nome da tarefa"
-        value={taskName}
-        onChangeText={(text) => setTaskName(text)}
-      />
-      <View>
-        <Button title="Selecionar Data" onPress={() => setShowDatePicker(true)} />
-        {showDatePicker && (
-          <DateTimePicker
-            value={taskDate}
-            mode="date"
-            display="default"
-            minimumDate={new Date()}
-            onChange={onChangeDate}
-          />
-        )}
-        <Text style={TaskStyles.dateText}>Data Selecionada: {taskDate.toLocaleDateString()}</Text>
-      </View>
-      <Button title="Adicionar Tarefa" onPress={handleAddTask} />
-    </View>
-  );
-
   return (
-    <FlatList
-      data={tasks}
-      keyExtractor={(item) => item.id}
-      ListHeaderComponent={renderHeader}
-      renderItem={({ item }) => (
-        <View style={TaskStyles.taskItem}>
+    <KeyboardAvoidingView
+      style={{ flex: 1 }}
+      behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+    >
+      <ScrollView contentContainerStyle={TaskStyles.container}>
+        <View style={TaskStyles.inputContainer}>
+          <TextInput
+            style={TaskStyles.input}
+            placeholder="Nome da tarefa"
+            value={taskName}
+            onChangeText={(text) => setTaskName(text)}
+          />
           <View>
-            <Text style={TaskStyles.taskItemText}>{item.name}</Text>
-            <Text style={TaskStyles.taskItemText}>{item.date}</Text>
+            <Button title="Selecionar Data" onPress={() => setShowDatePicker(true)} />
+            {showDatePicker && (
+              <DateTimePicker
+                value={taskDate}
+                mode="date"
+                display="default"
+                minimumDate={new Date()}
+                onChange={onChangeDate}
+              />
+            )}
+            <Text style={TaskStyles.dateText}>Data Selecionada: {taskDate.toLocaleDateString()}</Text>
           </View>
-          <Button title="Excluir" onPress={() => handleDeleteTask(item.id)} />
+          <TouchableOpacity style={TaskStyles.addButton} onPress={handleAddTask}>
+            <Text style={{ fontSize: 24 }}>✅</Text>
+          </TouchableOpacity>
         </View>
-      )}
-      ListEmptyComponent={<Text style={TaskStyles.emptyListText}>Nenhuma tarefa adicionada.</Text>}
-    />
+
+        <FlatList
+          data={tasks}
+          keyExtractor={(item) => item.id}
+          renderItem={({ item }) => (
+            <View style={TaskStyles.taskItem}>
+              <View>
+                <Text style={TaskStyles.taskItemText}>{item.name}</Text>
+                <Text style={TaskStyles.taskItemText}>{item.date}</Text>
+              </View>
+              <TouchableOpacity onPress={() => handleDeleteTask(item.id)}>
+                <Text style={{ color: 'black', fontSize: 24 }}>❌</Text>
+              </TouchableOpacity>
+            </View>
+          )}
+          ListEmptyComponent={<Text style={TaskStyles.emptyListText}>Nenhuma tarefa adicionada.</Text>}
+        />
+      </ScrollView>
+    </KeyboardAvoidingView>
   );
 };
 
