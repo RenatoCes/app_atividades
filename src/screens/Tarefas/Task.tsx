@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useCallback } from 'react';
-import { View, Text, TextInput, Button, FlatList, Alert } from 'react-native';
+import { View, Text, TextInput, Button, FlatList, Alert, ScrollView } from 'react-native';
 import TaskStyles from './style';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import DateTimePicker from '@react-native-community/datetimepicker';
@@ -125,7 +125,7 @@ const TaskScreen: React.FC = () => {
   }, []);
 
   return (
-    <View style={TaskStyles.container}>
+    <ScrollView contentContainerStyle={TaskStyles.container}>
       <Text style={TaskStyles.title}>Tarefas</Text>
 
       <View style={TaskStyles.inputContainer}>
@@ -148,7 +148,7 @@ const TaskScreen: React.FC = () => {
           )}
           <Text style={TaskStyles.dateText}>Data Selecionada: {taskDate.toLocaleDateString()}</Text>
         </View>
-        <Button title="Adicionar Tarefa" onPress={handleAddTask} />
+        <Button title="✅​" onPress={handleAddTask} />
       </View>
 
       <FlatList
@@ -160,11 +160,11 @@ const TaskScreen: React.FC = () => {
               <Text style={TaskStyles.taskItemText}>{item.name}</Text>
               <Text style={TaskStyles.taskItemText}>{item.date}</Text>
             </View>
-            <Button title="Excluir" onPress={() => handleDeleteTask(item.id)} />
+            <Button title="❌​" onPress={() => handleDeleteTask(item.id)} />
           </View>
         )}
       />
-    </View>
+    </ScrollView>
   );
 };
 
