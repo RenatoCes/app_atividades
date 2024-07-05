@@ -64,14 +64,6 @@ const TaskScreen: React.FC = () => {
         },
         trigger: null, // Dispara imediatamente
       });
-    } else {
-      await Notifications.scheduleNotificationAsync({
-        content: {
-          title: "Nenhuma tarefa",
-          body: `Você não tem nenhuma tarefa. Adicione algumas!`,
-        },
-        trigger: null, // Dispara imediatamente
-      });
     }
   };
 
@@ -104,7 +96,7 @@ const TaskScreen: React.FC = () => {
     }
 
     const currentDate = new Date();
-    if (taskDate.getTime() < currentDate.setHours(0, 0, 0, 0)) {
+    if (taskDate.getTime() < currentDate.setHours(-1, 0, 0, 0)) {
       Alert.alert('Atenção', 'A data selecionada já passou!');
     } else if (taskDate.toDateString() === currentDate.toDateString()) {
       Alert.alert('Atenção', 'A tarefa deve ser feita hoje!');
