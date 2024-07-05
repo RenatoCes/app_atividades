@@ -28,8 +28,7 @@ Gestão de dependências e conflitos:
 
 ## Testes:
 
-A configuração inicial dos testes com Jest apresentou dificuldades de compatibilidade. Optou-se por remover temporariamente a funcionalidade de testes para focar na funcionalidade principal do aplicativo.
-Interface do usuário e validação:
+Para util
 
 A validação da data das tarefas e a gestão de estados múltiplos foram desafios técnicos resolvidos com a implementação de lógica específica nos handlers de eventos e utilizando hooks do React.
 Considerações Técnicas e Desempenho
