@@ -1,10 +1,12 @@
-import React, { useState, useEffect } from 'react';
-import { View, Text, TextInput, Button, FlatList, Alert, Platform } from 'react-native';
+import React, { useState, useEffect, useCallback } from 'react';
+import { View, Text, TextInput, Button, FlatList, Alert } from 'react-native';
 import TaskStyles from './style';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import DateTimePicker from '@react-native-community/datetimepicker';
+import * as Notifications from 'expo-notifications';
 
 interface Task {
+  id: string;
   name: string;
   date: string;
 }
@@ -17,13 +19,68 @@ const TaskScreen: React.FC = () => {
 
   useEffect(() => {
     loadTasks();
+    setupNotifications();
   }, []);
+
+  useEffect(() => {
+    checkTasksDaily();
+  }, [tasks]);
+
+  const setupNotifications = async () => {
+    const { status } = await Notifications.requestPermissionsAsync();
+    if (status !== 'granted') {
+      Alert.alert('Erro', 'Permissão para enviar notificações não concedida');
+      return;
+    }
+    
+    Notifications.setNotificationHandler({
+      handleNotification: async () => ({
+        shouldShowAlert: true,
+        shouldPlaySound: false,
+        shouldSetBadge: false,
+      }),
+    });
+  };
+
+  const checkTasksDaily = async () => {
+    const now = new Date();
+    const today = now.toLocaleDateString();
+    const todayTasks = tasks.filter(task => task.date === today);
+    const futureTasks = tasks.filter(task => new Date(task.date) > now);
+
+    if (todayTasks.length > 0) {
+      await Notifications.scheduleNotificationAsync({
+        content: {
+          title: "Tarefas para hoje",
+          body: `Você tem ${todayTasks.length} tarefas para hoje: ${todayTasks.map(task => task.name).join(', ')}`,
+        },
+        trigger: null, // Dispara imediatamente
+      });
+    } else if (futureTasks.length > 0) {
+      await Notifications.scheduleNotificationAsync({
+        content: {
+          title: "Tarefas futuras",
+          body: `Você tem ${futureTasks.length} tarefas futuras: ${futureTasks.map(task => task.name).join(', ')}`,
+        },
+        trigger: null, // Dispara imediatamente
+      });
+    } else {
+      await Notifications.scheduleNotificationAsync({
+        content: {
+          title: "Nenhuma tarefa",
+          body: `Você não tem nenhuma tarefa. Adicione algumas!`,
+        },
+        trigger: null, // Dispara imediatamente
+      });
+    }
+  };
 
   const saveTasks = async (tasks: Task[]) => {
     try {
       const jsonValue = JSON.stringify(tasks);
       await AsyncStorage.setItem('@tasks', jsonValue);
     } catch (e) {
+      Alert.alert('Erro', 'Não foi possível salvar as tarefas. Tente novamente.');
       console.error('Erro ao salvar tarefas:', e);
     }
   };
@@ -35,24 +92,24 @@ const TaskScreen: React.FC = () => {
         setTasks(JSON.parse(jsonValue));
       }
     } catch (e) {
+      Alert.alert('Erro', 'Não foi possível carregar as tarefas. Tente novamente.');
       console.error('Erro ao carregar tarefas:', e);
     }
   };
 
-  const handleAddTask = () => {
+  const handleAddTask = useCallback(() => {
     if (taskName.trim() === '') {
       Alert.alert('Erro', 'Por favor, insira o nome da tarefa.');
       return;
     }
 
     const currentDate = new Date();
-
-    if (taskDate.getTime() < currentDate.getTime()) {
-      Alert.alert('Atenção', 'A tarefa está expirada!');
+    if (taskDate.getTime() < currentDate.setHours(0, 0, 0, 0)) {
+      Alert.alert('Atenção', 'A data selecionada já passou!');
     } else if (taskDate.toDateString() === currentDate.toDateString()) {
       Alert.alert('Atenção', 'A tarefa deve ser feita hoje!');
     } else {
-      const newTask: Task = { name: taskName, date: taskDate.toLocaleDateString() };
+      const newTask: Task = { id: Date.now().toString(), name: taskName, date: taskDate.toLocaleDateString() };
       const updatedTasks = [...tasks, newTask];
       setTasks(updatedTasks);
       saveTasks(updatedTasks);
@@ -60,27 +117,25 @@ const TaskScreen: React.FC = () => {
       setTaskDate(new Date());
       Alert.alert('Sucesso', 'Tarefa adicionada com sucesso!');
     }
-  };
+  }, [taskName, taskDate, tasks]);
 
-  const handleDeleteTask = (index: number) => {
-    const newTasks = [...tasks];
-    newTasks.splice(index, 1);
+  const handleDeleteTask = useCallback((taskId: string) => {
+    const newTasks = tasks.filter(task => task.id !== taskId);
     setTasks(newTasks);
     saveTasks(newTasks);
-  };
+  }, [tasks]);
 
-  const onChangeDate = (event: any, selectedDate?: Date) => {
+  const onChangeDate = useCallback((event: any, selectedDate?: Date) => {
     setShowDatePicker(false);
     if (selectedDate) {
       setTaskDate(selectedDate);
     }
-  };
+  }, []);
 
   return (
     <View style={TaskStyles.container}>
       <Text style={TaskStyles.title}>Tarefas</Text>
 
-      {/* Input para adicionar nova tarefa */}
       <View style={TaskStyles.inputContainer}>
         <TextInput
           style={TaskStyles.input}
@@ -95,6 +150,7 @@ const TaskScreen: React.FC = () => {
               value={taskDate}
               mode="date"
               display="default"
+              minimumDate={new Date()}
               onChange={onChangeDate}
             />
           )}
@@ -103,17 +159,16 @@ const TaskScreen: React.FC = () => {
         <Button title="Adicionar Tarefa" onPress={handleAddTask} />
       </View>
 
-      {/* Lista de tarefas */}
       <FlatList
         data={tasks}
-        keyExtractor={(item, index) => index.toString()}
-        renderItem={({ item, index }) => (
+        keyExtractor={(item) => item.id}
+        renderItem={({ item }) => (
           <View style={TaskStyles.taskItem}>
             <View>
               <Text style={TaskStyles.taskItemText}>{item.name}</Text>
               <Text style={TaskStyles.taskItemText}>{item.date}</Text>
             </View>
-            <Button title="Excluir" onPress={() => handleDeleteTask(index)} />
+            <Button title="Excluir" onPress={() => handleDeleteTask(item.id)} />
           </View>
         )}
       />
