@@ -1,6 +1,16 @@
 # REMINDER ![alt text](assets/favicon.png)
 
 ## 🚀 **Pré-requisitos**
+
+ Antes de começar, verifique se você atendeu aos seguintes requisitos:
+- Você tem uma máquina `Windows`.
+ - Você tem o `nodejs` instalado na maquina
+ - expo 
+
+    ```bash
+    npm install -g expo-cli
+    ````
+
 1. Instale as seguintes dependências:
 
     ```bash
@@ -55,23 +65,42 @@ Para realizar testes no REMINDER foi utilizado o Jest, um framework de teste de 
 - **AsyncStorage**: Para persistência de dados local.
 - **DateTimePicker**: Para seleção de datas.
 - **React Navigation**: Para navegação entre telas.
-- **React Native Vector Icons**: Para ícones customizáveis.
-- **Testing Library**: Para testes de unidade e integração (embora temporariamente removido).
+- **Testing Library for React Native**:Biblioteca de testes que facilita a escrita e execução de testes para aplicativos React Native.
+- **Jest**:Framework de teste de JavaScript
+- **TypeScript**:Linguagem de programação que adiciona tipagem estática opcional ao JavaScript
+- **React Native Screens**:Framework de teste de JavaScript.
+- **Expo SDK**:Conjunto de APIs e serviços fornecidos pela Expo para desenvolvimento de aplicativos móveis.
+
 
 ## 🤝 **COLABORADORES**
-Agradecimentos especiais aos colaboradores que contribuíram para o desenvolvimento deste projeto:
-
-
-![Gustavo Felix do Rego](assets/colaborador1.jpg)  
-
-
-
-![Renato César dos Santos Júnior](assets/colaborador2.jpg)  
-
-
-
-![Tiago José Cardoso Leite](assets/colaborador3.jpg)  
-
+<table>
+  <tr>
+    <td align="center">
+      <a href="#" title="defina o titulo do link">
+        <img src="" width="100px;" alt="Gustavo"/><br>
+        <sub>
+          <b>Gustavo Felix do Rego</b>
+        </sub>
+      </a>
+    </td>
+    <td align="center">
+      <a href="#" title="defina o titulo do link">
+        <img src="" width="100px;" alt="Renato"/><br>
+        <sub>
+          <b>Renato César dos Santos Júnior</b>
+        </sub>
+      </a>
+    </td>
+    <td align="center">
+      <a href="#" title="defina o titulo do link">
+        <img src="" width="100px;" alt="Tiago"/><br>
+        <sub>
+          <b>Tiago Jose Cardoso Leite</b>
+        </sub>
+      </a>
+    </td>
+  </tr>
+</table>
 
 ## 📝 **Licença**
 Esse projeto está sob licença MIT.
